@@ -1,10 +1,14 @@
 import pandas as pd
 import numpy as np
-import statsmodels.stats.weightstats as ws
+from scipy.stats import cramervonmises_2samp
 
 chat_id = 362844815
 
 def solution(x: np.array, y: np.array) -> bool:
-    _, pvalue = ws.ztest(x, value=500, alternative='larger')
-
-    return pvalue <= 0.03
+    result = cramervonmises_2samp(x, y)
+    statistic, pvalue = result.statistic, result.pvalue
+    alpha = 0.01
+    if pvalue > alpha:
+        return True
+    else:
+        return False
